@@ -1,0 +1,17 @@
+{
+  "name": "trip-weather",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node -r dotenv/config app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^5.0.1",
+    "moment": "^2.21.0",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5"
+  }
+}
