@@ -9,7 +9,7 @@ const request = require('request-promise-native');
   const results = [];
   for (let stop of stops) {
     const prediction = {
-      date: stop.date,
+      date: moment(stop.date),
       location: stop.name,
       weather: `No prediction for ${stop.date}`
     };
@@ -23,17 +23,20 @@ const request = require('request-promise-native');
     response.daily.data.forEach(day => {
       //console.log(JSON.stringify(day));
       const date = moment.unix(day.time);
-      console.log("looking at prediction for " + date.format());
+      //console.log("looking at prediction for " + date.format());
       if (date.isSame(stopDate, 'day')) {
         prediction.summary = day.summary;
-        prediction.highTemp = day.apparentTemperatureMax + 'F';
+        prediction.highTemp = day.apparentTemperatureMax;
       }
     });
     results.push(prediction);
   }
 
-  console.log('Date\t\tLocation\t\tHigh Temp\t\tSummary');
   results.forEach(result => {
-    console.log(`${result.date}\t\t${result.location}\t\t${result.highTemp}\t\t${result.summary}`);
+    console.log(`${result.date.format('dddd, MMM D')}`);
+    console.log(`\t${Math.round(result.highTemp)}F`);
+    console.log(`\t${result.location}`);
+    console.log(`\t${result.summary}`);
+    console.log();
   })
 })();
