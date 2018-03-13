@@ -2,16 +2,18 @@ const fs = require('fs');
 const moment = require('moment');
 const stops = JSON.parse(fs.readFileSync('stops.json'));
 const request = require('request-promise-native');
+const express = require('express');
 
+const app = express();
+app.set('view engine', 'pug');
 
-
-(async () => {
+async function getPredictions() {
   const results = [];
   for (let stop of stops) {
     const prediction = {
-      date: moment(stop.date),
+      date: moment(stop.date).format('dddd, MMM D'),
       location: stop.name,
-      weather: `No prediction for ${stop.date}`
+      summary: `No prediction for ${stop.date}`
     };
     const stopDate = moment(stop.date);
     const options = {
@@ -19,24 +21,26 @@ const request = require('request-promise-native');
       json: true
     };
     const response = await request(options);
-    //console.log(response);
+    console.log(JSON.stringify(response, null, 2));
     response.daily.data.forEach(day => {
-      //console.log(JSON.stringify(day));
       const date = moment.unix(day.time);
-      //console.log("looking at prediction for " + date.format());
       if (date.isSame(stopDate, 'day')) {
         prediction.summary = day.summary;
-        prediction.highTemp = day.apparentTemperatureMax;
+        prediction.highTemp = `${Math.round(day.apparentTemperatureMax)}F`;
       }
     });
     results.push(prediction);
   }
 
-  results.forEach(result => {
-    console.log(`${result.date.format('dddd, MMM D')}`);
-    console.log(`\t${Math.round(result.highTemp)}F`);
-    console.log(`\t${result.location}`);
-    console.log(`\t${result.summary}`);
-    console.log();
-  })
-})();
+  return results;
+};
+
+
+app.get('/', async (req, res) => {
+  const predictions = await getPredictions();
+  res.render('index', {predictions});
+})
+
+app.listen(3000, () => {
+  console.log("Listening on port 3000");
+})

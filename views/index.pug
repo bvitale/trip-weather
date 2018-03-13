@@ -1,0 +1,16 @@
+html
+  head
+    title=Foo
+  body
+    table(cellpadding="5")
+      tr
+        th(align='left') Date
+        th(align='left') Location
+        th(align='left') High Temp
+        th(align='left') Summary
+      each val in predictions
+        tr
+          td(align='left') #{val.date}
+          td(align='left') #{val.location}
+          td(align='left') #{val.highTemp}
+          td(align='left') #{val.summary}
