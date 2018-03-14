@@ -1,6 +1,6 @@
 const fs = require('fs');
 const moment = require('moment');
-const stops = JSON.parse(fs.readFileSync('stops.json'));
+const stops = JSON.parse(fs.readFileSync(__dirname + '/stops.json'));
 const request = require('request-promise-native');
 const express = require('express');
 
@@ -36,11 +36,11 @@ async function getPredictions() {
 };
 
 
-app.get('/', async (req, res) => {
+app.get('/trip', async (req, res) => {
   const predictions = await getPredictions();
   res.render('index', {predictions});
 })
 
-app.listen(3000, () => {
-  console.log("Listening on port 3000");
-})
+module.exports = {
+  app
+};
