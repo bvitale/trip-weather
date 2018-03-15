@@ -11,9 +11,9 @@ async function getPredictions() {
   const results = [];
   for (let stop of stops) {
     const prediction = {
-      date: moment(stop.date).format('dddd, MMM D'),
+      date: moment(stop.date).format('ddd, MMM D'),
       location: stop.name,
-      summary: `No prediction for ${stop.date}`
+      summary: `No prediction yet`
     };
     const stopDate = moment(stop.date);
     const options = {
@@ -26,7 +26,7 @@ async function getPredictions() {
       const date = moment.unix(day.time);
       if (date.isSame(stopDate, 'day')) {
         prediction.summary = day.summary;
-        prediction.highTemp = `${Math.round(day.apparentTemperatureMax)}F`;
+        prediction.temp = `${Math.round(day.apparentTemperatureMin)} / ${Math.round(day.apparentTemperatureMax)}F`;
       }
     });
     results.push(prediction);

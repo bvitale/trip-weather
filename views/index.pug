@@ -1,16 +1,17 @@
 html
   head
     title=Foo
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous")
   body
-    table(cellpadding="5")
+    table(class="table")
       tr
         th(align='left') Date
         th(align='left') Location
-        th(align='left') High Temp
+        th(align='left') Temp
         th(align='left') Summary
       each val in predictions
         tr
           td(align='left') #{val.date}
           td(align='left') #{val.location}
-          td(align='left') #{val.highTemp}
+          td(align='left') #{val.temp}
           td(align='left') #{val.summary}
